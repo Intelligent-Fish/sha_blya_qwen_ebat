@@ -3,63 +3,425 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сумма двух чисел</title>
+    <title>🌈 Магический Калькулятор Суммы 🌈</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            text-align: center;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            background-size: 400% 400%;
+            animation: rainbow 10s ease infinite;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Плавающие частицы */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 15s infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                        inset 0 0 30px rgba(255, 255, 255, 0.5);
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            transform: perspective(1000px) rotateX(0deg);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: perspective(1000px) rotateX(5deg) scale(1.02);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ff0080, #00d4ff, #ffcc00, #ff0080);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 3s linear infinite;
+            text-shadow: 0 0 30px rgba(255, 0, 128, 0.5);
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        .input-group {
+            position: relative;
+            margin: 20px 0;
+        }
+
         input {
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #result {
-            margin-top: 20px;
+            padding: 15px 20px;
+            border: 3px solid transparent;
+            border-radius: 15px;
             font-size: 18px;
+            background: linear-gradient(45deg, #f0f0f0, #ffffff);
+            transition: all 0.3s ease;
+            outline: none;
+            text-align: center;
+        }
+
+        input:focus {
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5),
+                        0 0 40px rgba(0, 212, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+        input::placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .btn-calculate {
+            width: 100%;
+            padding: 18px;
+            margin-top: 20px;
+            background: linear-gradient(45deg, #ff0080, #ffcc00, #00d4ff, #ff0080);
+            background-size: 300% 300%;
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 20px;
             font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: gradient 3s ease infinite;
+            box-shadow: 0 10px 30px rgba(255, 0, 128, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 0, 128, 0.6),
+                        0 0 60px rgba(255, 204, 0, 0.4);
+        }
+
+        .btn-calculate:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-calculate::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 2.5em;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        .result-positive {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 1s ease infinite;
+        }
+
+        .result-negative {
+            background: linear-gradient(45deg, #ff0080, #ff4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Конфетти эффект */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Эмодзи реакция */
+        .emoji-reaction {
+            position: fixed;
+            font-size: 3em;
+            pointer-events: none;
+            animation: emoji-fly 2s ease-out forwards;
+            z-index: 100;
+        }
+
+        @keyframes emoji-fly {
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+        }
+
+        /* Счетчик нажатий */
+        .click-counter {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: linear-gradient(45deg, #ff0080, #ffcc00);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 0, 128, 0.4);
+            animation: bounce 2s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Пасхалка - режим дискотеки */
+        .disco-mode {
+            animation: disco 0.5s ease infinite;
+        }
+
+        @keyframes disco {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(180deg); }
+        }
+
+        /* Прогресс бар загрузки */
+        .loading-bar {
+            width: 100%;
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .loading-bar.active {
+            display: block;
+        }
+
+        .loading-bar::after {
+            content: '';
+            display: block;
+            height: 100%;
+            width: 50%;
+            background: linear-gradient(90deg, #ff0080, #00d4ff, #ffcc00);
+            animation: loading 1s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        /* Забавные сообщения */
+        .fun-message {
+            font-size: 14px;
+            color: #666;
+            margin-top: 15px;
+            font-style: italic;
+            min-height: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Сумма двух чисел</h1>
-    <input type="number" id="num1" placeholder="Введите первое число">
-    <input type="number" id="num2" placeholder="Введите второе число">
-    <button onclick="calculateSum()">Сложить</button>
-    <div id="result"></div>
+    <!-- Плавающие частицы -->
+    <div id="particles"></div>
+
+    <div class="container" id="container">
+        <div class="click-counter" id="clickCounter">🎯 Нажатий: 0</div>
+        <h1>🌈 Магический Калькулятор 🌈</h1>
+        
+        <div class="input-group">
+            <input type="number" id="num1" placeholder="✨ Первое число ✨" onkeypress="handleKeyPress(event)">
+        </div>
+        
+        <div class="input-group">
+            <input type="number" id="num2" placeholder="🚀 Второе число 🚀" onkeypress="handleKeyPress(event)">
+        </div>
+        
+        <button class="btn-calculate" onclick="calculateSum()" id="calcBtn">
+            🎲 СОЗДАТЬ МАГИЮ 🎲
+        </button>
+        
+        <div class="loading-bar" id="loadingBar"></div>
+        
+        <div id="result"></div>
+        
+        <div class="fun-message" id="funMessage"></div>
+    </div>
 
     <script>
+        let clickCount = 0;
+        let comboCount = 0;
+        const funMessages = [
+            "🎯 Математика - это весело!",
+            "⭐ Ты супер-считатель!",
+            "🌟 Ещё немного и станешь магистром чисел!",
+            "💫 Вселенная одобряет твой выбор!",
+            "🎪 Цирк чисел открыт!",
+            "🦄 Единороги танцуют от твоего результата!",
+            "🌈 Радуга светит ярче с твоими числами!",
+            "🎸 Рок-н-ролл в мире математики!",
+            "🍕 Пицца была бы круглой, как ноль!",
+            "🎮 Level up в арифметике!"
+        ];
+
+        const emojis = ['🎉', '✨', '💖', '🌟', '🦄', '🌈', '💫', '⭐', '🎊', '🔥'];
+        const bigNumberEmojis = ['🤯', '😱', '🚀', '💥', '⚡'];
+
+        // Создание плавающих частиц
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.width = particle.style.height = (Math.random() * 20 + 10) + 'px';
+                particle.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Эффект конфетти
+        function createConfetti() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        // Эмодзи реакция
+        function showEmojiReaction(x, y) {
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji-reaction';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = x + 'px';
+            emoji.style.top = y + 'px';
+            document.body.appendChild(emoji);
+            
+            setTimeout(() => emoji.remove(), 2000);
+        }
+
+        // Обработка нажатия кнопки
         async function calculateSum() {
             const num1 = parseFloat(document.getElementById('num1').value);
             const num2 = parseFloat(document.getElementById('num2').value);
             const resultDiv = document.getElementById('result');
+            const loadingBar = document.getElementById('loadingBar');
+            const funMessage = document.getElementById('funMessage');
+            const clickCounter = document.getElementById('clickCounter');
+            const container = document.getElementById('container');
+
+            clickCount++;
+            comboCount++;
+            clickCounter.textContent = `🎯 Нажатий: ${clickCount}`;
+
+            // Пасхалка: режим дискотеки после 10 нажатий
+            if (clickCount % 10 === 0) {
+                container.classList.add('disco-mode');
+                setTimeout(() => container.classList.remove('disco-mode'), 3000);
+                funMessage.textContent = "🪩 ДИСКО РЕЖИМ АКТИВИРОВАН! 🪩";
+                createConfetti();
+            }
 
             // Проверка валидности ввода
             if (isNaN(num1) || isNaN(num2)) {
-                resultDiv.textContent = 'Пожалуйста, введите оба числа';
-                resultDiv.style.color = 'red';
+                resultDiv.textContent = '🤔 Введи оба числа, друг!';
+                resultDiv.className = 'result-negative';
+                funMessage.textContent = "Не переживай, ошибки делают нас сильнее! 💪";
                 return;
             }
 
+            // Показываем индикатор загрузки
+            loadingBar.classList.add('active');
+            resultDiv.textContent = '';
+
             try {
+                // Имитация "магического" процесса вычисления
+                await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
+
                 const response = await fetch('/api/sum', {
                     method: 'POST',
                     headers: {
@@ -70,18 +432,92 @@
 
                 const data = await response.json();
                 
+                loadingBar.classList.remove('active');
+
                 if (response.ok) {
-                    resultDiv.textContent = `Результат: ${data.result}`;
-                    resultDiv.style.color = 'green';
+                    const result = data.result;
+                    resultDiv.textContent = `🎉 ${result} 🎉`;
+                    
+                    // Разные эффекты для разных результатов
+                    if (result === 0) {
+                        resultDiv.className = 'result-positive';
+                        funMessage.textContent = "🎭 Ноль - это тоже число, и очень важное!";
+                    } else if (result > 100) {
+                        resultDiv.className = 'result-positive';
+                        funMessage.textContent = "🤯 Ого! Это уже серьёзные числа!";
+                        // Эмодзи для больших чисел
+                        for (let i = 0; i < 5; i++) {
+                            setTimeout(() => {
+                                const btn = document.getElementById('calcBtn');
+                                const rect = btn.getBoundingClientRect();
+                                showEmojiReaction(
+                                    rect.left + Math.random() * rect.width,
+                                    rect.top + Math.random() * rect.height / 2
+                                );
+                            }, i * 200);
+                        }
+                    } else if (result < 0) {
+                        resultDiv.className = 'result-negative';
+                        funMessage.textContent = "🧊 Отрицательный результат? Холодно, но правильно!";
+                    } else {
+                        resultDiv.className = 'result-positive';
+                        funMessage.textContent = funMessages[Math.floor(Math.random() * funMessages.length)];
+                    }
+
+                    // Конфетти для положительных результатов
+                    if (result >= 0) {
+                        createConfetti();
+                    }
+
+                    // Пасхалка: особый ответ для 42
+                    if (result === 42) {
+                        funMessage.textContent = "🌌 42 - это ответ на главный вопрос жизни, вселенной и всего такого! 🌌";
+                        createConfetti();
+                        createConfetti();
+                    }
+
                 } else {
-                    resultDiv.textContent = `Ошибка: ${data.error}`;
-                    resultDiv.style.color = 'red';
+                    resultDiv.textContent = `❌ Ошибка: ${data.error}`;
+                    resultDiv.className = 'result-negative';
+                    funMessage.textContent = "Что-то пошло не так, но мы попробуем ещё! 🔄";
                 }
             } catch (error) {
-                resultDiv.textContent = 'Ошибка соединения с сервером';
-                resultDiv.style.color = 'red';
+                loadingBar.classList.remove('active');
+                resultDiv.textContent = '📡 Ошибка связи с космосом!';
+                resultDiv.className = 'result-negative';
+                funMessage.textContent = "Проверь интернет и попробуй снова! 🌐";
             }
         }
+
+        // Обработка нажатия Enter
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                calculateSum();
+            }
+        }
+
+        // Добавляем интерактивности при клике на кнопку
+        document.getElementById('calcBtn').addEventListener('click', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            // Создаём несколько эмодзи вокруг курсора
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    showEmojiReaction(
+                        x + (Math.random() - 0.5) * 100,
+                        y + (Math.random() - 0.5) * 100
+                    );
+                }, i * 100);
+            }
+        });
+
+        // Инициализация при загрузке
+        window.onload = () => {
+            createParticles();
+            document.getElementById('funMessage').textContent = "Добро пожаловать в мир магической математики! ✨";
+        };
     </script>
 </body>
 </html>
