@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сумма двух чисел</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Сумма двух чисел</h1>
+    <input type="number" id="num1" placeholder="Введите первое число">
+    <input type="number" id="num2" placeholder="Введите второе число">
+    <button onclick="calculateSum()">Сложить</button>
+    <div id="result"></div>
+
+    <script>
+        async function calculateSum() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const resultDiv = document.getElementById('result');
+
+            // Проверка валидности ввода
+            if (isNaN(num1) || isNaN(num2)) {
+                resultDiv.textContent = 'Пожалуйста, введите оба числа';
+                resultDiv.style.color = 'red';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/sum', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ num1, num2 })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.textContent = `Результат: ${data.result}`;
+                    resultDiv.style.color = 'green';
+                } else {
+                    resultDiv.textContent = `Ошибка: ${data.error}`;
+                    resultDiv.style.color = 'red';
+                }
+            } catch (error) {
+                resultDiv.textContent = 'Ошибка соединения с сервером';
+                resultDiv.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>
